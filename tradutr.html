@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tradutor de Símbolos</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #0e0e10;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .container {
+        background: #1c1c1f;
+        padding: 30px;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 900px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: 300;
+        letter-spacing: 2px;
+    }
+    .areas {
+        display: flex;
+        gap: 20px;
+    }
+    textarea {
+        width: 100%;
+        height: 200px;
+        border: none;
+        padding: 15px;
+        border-radius: 8px;
+        background: #26262b;
+        color: #fff;
+        font-size: 16px;
+        resize: none;
+        outline: none;
+    }
+    .btns {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+    button {
+        padding: 12px 25px;
+        background: #4c63ff;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    button:hover {
+        background: #3647d8;
+    }
+</style>
+</head>
+
+<body>
+<div class="container">
+    <h1>Tradutor de Símbolos</h1>
+    
+    <div class="areas">
+        <textarea id="textoNormal" placeholder="Digite em Português aqui..."></textarea>
+        <textarea id="textoSimbolo" placeholder="Texto codificado aparece aqui..."></textarea>
+    </div>
+
+    <div class="btns">
+        <button onclick="traduzirParaSimbolos()">→ Traduzir para Símbolos</button>
+        <button onclick="inverterCampos()">⇄ Inverter</button>
+        <button onclick="traduzirParaNormal()">← Traduzir para Português</button>
+    </div>
+</div>
+
+<script>
+const alfabeto = {
+    "A": "¥","B": "√","C": "}","D": "™","E": "~","F": "#","G": "%","H": "|","I": "∆","J": "£",
+    "K": "{","L": "§","M": "✓","N": "\\","O": "©","P": "•","Q": "^","R": "[","S": "€","T": "¢",
+    "U": "=","V": "®","W": "π","X": "×","Y": "÷","Z": "`"
+};
+
+// Cria dicionário reverso automaticamente
+const inverso = Object.fromEntries(Object.entries(alfabeto).map(([k,v])=>[v,k]));
+
+function traduzirParaSimbolos() {
+    let txt = document.getElementById("textoNormal").value.toUpperCase();
+    let result = "";
+    for (let char of txt) {
+        result += alfabeto[char] || char;
+    }
+    document.getElementById("textoSimbolo").value = result;
+}
+
+function traduzirParaNormal() {
+    let txt = document.getElementById("textoSimbolo").value;
+    let result = txt;
+    for (let [simbolo, letra] of Object.entries(inverso)) {
+        result = result.split(simbolo).join(letra);
+    }
+    document.getElementById("textoNormal").value = result;
+}
+
+function inverterCampos() {
+    let campoA = document.getElementById("textoNormal").value;
+    let campoB = document.getElementById("textoSimbolo").value;
+    document.getElementById("textoNormal").value = campoB;
+    document.getElementById("textoSimbolo").value = campoA;
+}
+</script>
+
+</body>
+</html>
